@@ -1,0 +1,17 @@
+version: "3.4"
+
+services:
+  server:
+    build:
+      args:
+        CONTAINER_APP_PARENT_DIR: $CONTAINER_APP_PARENT_DIR
+        CONTAINER_APP_DIR: $CONTAINER_APP_DIR
+        NODE_ENV: production
+        SERVER_PORT: $CONTAINER_SERVER_PORT
+      context: ./
+      dockerfile: Dockerfile
+    container_name: server
+    image: server
+    ports:
+      # Map the Host port to the Container's exposed port
+      - "$HOST_SERVER_PORT:$CONTAINER_SERVER_PORT"
