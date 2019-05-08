@@ -1,0 +1,22 @@
+{
+  "name": "poc-proxy-node-server-requests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "ports": {
+    "dev": 4000
+  },
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/the0neWhoKnocks/poc.proxy-node-server-requests"
+  },
+  "author": "",
+  "devDependencies": {
+    "cli-color": "^1.4.0",
+    "cross-env": "^5.2.0",
+    "request": "^2.88.0"
+  }
+}
