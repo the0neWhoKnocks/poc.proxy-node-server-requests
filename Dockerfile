@@ -1,5 +1,5 @@
 # Setup the environment
-FROM node:10-alpine AS release
+FROM node:10-alpine
 ARG CONTAINER_APP_PARENT_DIR
 ARG CONTAINER_APP_DIR
 ARG NODE_ENV
