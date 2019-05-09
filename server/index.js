@@ -1,3 +1,5 @@
+const { readFileSync } = require('fs');
+const { resolve } = require('path');
 const color = require('cli-color');
 const http = require('http');
 const { networkInterfaces } = require('os');
@@ -5,7 +7,7 @@ const request = require('request');
 const jsonResp = require('./jsonResp');
 const requestHandler = require('./requestHandler');
 
-const PORT = 3000;
+const PORT = process.env.SERVER_PORT || 3000;
 
 process.on('unhandledRejection', (reason , p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
@@ -55,28 +57,52 @@ const rootHandler = ({ res }) => {
       </style>
     </head>
     <script>
-      function getServerData(){
-        fetch('/api/data')
-          .then((resp) => resp.json())
-          .then((data) => console.log(data))
-          .catch((err) => console.log(err));
+      var els = {};
+      
+      function writeResp(data) {
+        els.resp.innerText = data;
       }
       
-      function getClientData(){
-        fetch('https://rickandmortyapi.com/api/character/1')
-          .then((resp) => resp.json())
-          .then((data) => console.log(data))
-          .catch((err) => console.log(err));
+      function handleBtnClick(ev) {
+        var btn = ev.target;
+        var name = btn.name;
+        var protocol = btn.dataset.protocol;
+        
+        switch(name){
+          case 'cReq':
+            writeResp('Loading');
+            fetch('https://rickandmortyapi.com/api/character/1')
+              .then((resp) => resp.json())
+              .then((data) => writeResp(JSON.stringify(data, null, 2)))
+              .catch((err) => writeResp(err));
+            break;
+          
+          case 'sReq':
+            writeResp('Loading');
+            fetch(\`/api/data?protocol=\${protocol}\`)
+              .then((resp) => resp.text())
+              .then((data) => {
+                if(data) writeResp(data);
+                else writeResp('No data returned');
+              })
+              .catch((err) => writeResp(err));
+            break;
+        }
       }
       
       window.addEventListener('DOMContentLoaded', () => {
-        document.querySelector('[name="sReq"]').addEventListener('click', getServerData);
-        document.querySelector('[name="cReq"]').addEventListener('click', getClientData);
+        document.body.addEventListener('click', handleBtnClick);
+        els.resp = document.querySelector('#resp');
       });
     </script>
     <body>
-      <button name="sReq">Server Request</button>
+      <button name="sReq" data-protocol="https">(Server) HTTPS Request</button>
+      <button name="sReq" data-protocol="http">(Server) HTTP Request</button>
       <button name="cReq">Client Request</button>
+      <pre
+        id="resp"
+        style="width:100%; height:600px; overflow:auto; background:#666; color:#eee; padding:1em;"
+      ></pre>
     </body>
     </html>
   `);
@@ -87,11 +113,14 @@ const errorHandler = ({ res }, code, msg) => {
   res.end(msg);
 };
 
-const apiHandler = ({ res }) => {
+const apiHandler = ({ reqData, res }) => {
+  const url = `${ reqData.protocol }://example.com`;
   request({
-    url: 'https://rickandmortyapi.com/api/character/2',
+    // url: 'https://rickandmortyapi.com/api/character/2',
+    url,
   }, (err, body, data) => {
-    jsonResp(res, data);
+    // jsonResp(res, data);
+    res.end(data);
   });
 };
 
@@ -110,5 +139,26 @@ http
         + `\n  External: ${ color.cyan(`http://${ getExternalIP() }:${ PORT }/`) }`;
       
       console.log(msg);
+      
+      const proxy = process.env.HTTP_PROXY;
+      const maxPing = 5;
+      let pingCount = 0;
+      const ping = setInterval(() => {
+        if(pingCount < maxPing){
+          pingCount += 1;
+          
+          console.log(`Pinging ${ proxy }`);
+          
+          http.get(proxy, (res) => {
+            console.log('success');
+            clearInterval(ping);
+          })
+          .on('error', (err) => console.log('fail'));
+        }
+        else {
+          clearInterval(ping);
+        }
+      }, 1000);
+      
     }, 1000);
   });

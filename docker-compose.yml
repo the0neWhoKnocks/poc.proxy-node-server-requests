@@ -1,17 +1,50 @@
 version: "3.4"
 
 services:
-  server:
+  app:
     build:
       args:
+        # NOTE - Check `.env` for variable values
         CONTAINER_APP_PARENT_DIR: $CONTAINER_APP_PARENT_DIR
         CONTAINER_APP_DIR: $CONTAINER_APP_DIR
         NODE_ENV: production
         SERVER_PORT: $CONTAINER_SERVER_PORT
       context: ./
       dockerfile: Dockerfile
-    container_name: server
-    image: server
+    container_name: poc-app
+    environment:
+      # NOTE - Using the name of the container `poc-proxy` for the domain
+      HTTP_PROXY: http://poc-proxy:$CONTAINER_PROXY_PORT
+      HTTPS_PROXY: https://poc-proxy:$CONTAINER_PROXY_PORT
+      # NODE_EXTRA_CA_CERTS: /tmp/mitmproxy-ca-cert.pem
+      # If value equals '0', certificate validation is disabled for TLS
+      # connections. This makes TLS, and HTTPS by extension, insecure. The use
+      # of this environment variable is strongly discouraged.
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
+      SERVER_PORT: $CONTAINER_SERVER_PORT
+    image: poc-app
+    networks: 
+      - poc-net
     ports:
       # Map the Host port to the Container's exposed port
       - "$HOST_SERVER_PORT:$CONTAINER_SERVER_PORT"
+  proxy:
+    # command: mitmdump
+    # command: mitmweb --web-iface 0.0.0.0 --mode transparent
+    # NOTE - https://docs.mitmproxy.org/stable/concepts-options/
+    command: mitmweb --web-iface 0.0.0.0 --set listen_port=$CONTAINER_PROXY_PORT --set web_open_browser=false
+    container_name: poc-proxy
+    image: mitmproxy/mitmproxy
+    networks: 
+      - poc-net
+    ports:
+      # Map the Host port to the Container's exposed port
+      - "$HOST_PROXY_PORT:$CONTAINER_PROXY_PORT"
+      - "8082:8081"
+    volumes:
+      # Map local directory to Container for easy access of certs and settings
+      - ./.mitmproxy:/home/mitmproxy/.mitmproxy
+      
+networks:
+  poc-net:
+    driver: bridge
