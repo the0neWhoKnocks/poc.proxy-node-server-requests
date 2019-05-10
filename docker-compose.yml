@@ -24,6 +24,9 @@ services:
     ports:
       # Map the Host port to the Container's exposed port
       - "$HOST_SERVER_PORT:$CONTAINER_SERVER_PORT"
+    volumes:
+      # Map local files to Container for real-time changes
+      - ./server:$CONTAINER_APP_DIR/server
   proxy:
     build:
       context: ./
