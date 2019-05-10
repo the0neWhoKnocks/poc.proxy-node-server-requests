@@ -6,6 +6,19 @@
 
 - Install Node deps with `npm i`
 - Ensure you have Docker up and running
+- Install `.anyproxy/certificates/rootCA.crt`
+  - **Windows**
+    - Double-Click on the cert
+    - Click **Install Certificate**
+    - Choose **Current User**
+    - **Place all certificates in the following store** > Choose `Trusted Root Certification Authorities`
+  - **OSX**
+    - Double-Click on the cert
+    - When Keychain pops up, you should see `AnyProxy` in the **Categories** > **Certificates** section
+    - Double-click `AnyProxy` and in the new window, expand **Trust** and set
+      **When using this certificate** to `Always Trust`.
+    - Close the new window, and you'll be prompted to Update cert settings,
+      and most likely enter your password.
 
 ---
 
