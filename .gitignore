@@ -1,6 +1,10 @@
 # directories
 node_modules
+.anyproxy/cache
 
 # files
 *.log
 .DS_Store
+.anyproxy/certificates/*
+!.anyproxy/certificates/rootCA.crt
+!.anyproxy/certificates/rootCA.key

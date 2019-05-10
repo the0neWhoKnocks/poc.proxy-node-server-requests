@@ -1,5 +1,5 @@
 FROM node:10-alpine
-ARG ANYPROXY_VERSION=3.10.6
+ARG ANYPROXY_VERSION=4.0.5
 
 EXPOSE 8001
 EXPOSE 8002
@@ -9,8 +9,6 @@ RUN echo "#!/bin/sh" > /usr/bin/open \
   && chmod +x /usr/bin/open \
   && npm i -g anyproxy@$ANYPROXY_VERSION
 
-RUN mkdir /anyproxy \
-  # generate root cert
-  && anyproxy --root
+RUN mkdir /anyproxy
 
-CMD anyproxy --intercept --file /anyproxy/anyproxy.log
+CMD ["anyproxy", "--intercept"]

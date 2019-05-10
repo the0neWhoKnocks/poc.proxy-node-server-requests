@@ -115,12 +115,19 @@ const errorHandler = ({ res }, code, msg) => {
 
 const apiHandler = ({ reqData, res }) => {
   const url = `${ reqData.protocol }://example.com`;
+  
   request({
     // url: 'https://rickandmortyapi.com/api/character/2',
     url,
   }, (err, body, data) => {
-    // jsonResp(res, data);
-    res.end(data);
+    if(err) {
+      res.statusCode = 500;
+      res.end(`${err.code} | ${err.stack}`);
+    }
+    else {
+      // jsonResp(res, data);
+      res.end(data);
+    }
   });
 };
 
