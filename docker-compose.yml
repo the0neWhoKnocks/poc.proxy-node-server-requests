@@ -17,10 +17,6 @@ services:
       HTTP_PROXY: http://poc-proxy:$CONTAINER_PROXY_PORT
       HTTPS_PROXY: http://poc-proxy:$CONTAINER_PROXY_PORT
       NODE_EXTRA_CA_CERTS: /tmp/proxy-cert.crt
-      # If value equals '0', certificate validation is disabled for TLS
-      # connections. This makes TLS, and HTTPS by extension, insecure. The use
-      # of this environment variable is strongly discouraged.
-      # NODE_TLS_REJECT_UNAUTHORIZED: 0
       SERVER_PORT: $CONTAINER_SERVER_PORT
     image: poc-app
     networks: 
@@ -37,9 +33,9 @@ services:
     networks: 
       - poc-net
     ports:
-      # Map the Host port to the Container's exposed port
+      # Map Host ports to the Container's exposed ports
       - "$HOST_PROXY_PORT:$CONTAINER_PROXY_PORT"
-      - "8002:8002"
+      - "$HOST_PROXY_WEB_PORT:$CONTAINER_PROXY_WEB_PORT"
     volumes:
       # Map local directory to Container for easy access of settings
       - ./.anyproxy:/root/.anyproxy
