@@ -1,6 +1,7 @@
 # directories
-node_modules
 .anyproxy/cache
+node_modules
+tests/puppeteer-chrome-profile
 
 # files
 *.log

@@ -22,7 +22,7 @@
 
 ---
 
-## Run
+## Run App & Proxy
 
 Once the App and Proxy are up and running you can reach them at these addresses.
 - App `http://localhost:3000`
@@ -61,9 +61,37 @@ d exec -it poc-proxy sh
 
 ---
 
+## Run Integration Tests
+
+**NOTE** - You should have the App and Proxy running first.
+
+In reference to the commands being run.
+- `nr` equals `npm run`
+
+```sh
+nr test
+```
+
+---
+
 ## Troubleshooting
 
 ```sh
 http_proxy=http://localhost:8001/ curl http://example.com/
 https_proxy=http://localhost:8001/ curl -k https://example.com/
 ```
+
+### WSL & Puppeteer
+
+Install Chrome deps
+```sh
+sudo apt-get install libxss1 libasound2
+```
+In the `launch` options for `puppeteer` I had to specify
+```js
+args: [
+  '--disable-setuid-sandbox',
+  '--no-sandbox',
+],
+```
+to get around [sandbox issues](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#setting-up-chrome-linux-sandbox).
