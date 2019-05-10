@@ -15,8 +15,8 @@ services:
     environment:
       # NOTE - Using the name of the container `poc-proxy` for the domain
       HTTP_PROXY: http://poc-proxy:$CONTAINER_PROXY_PORT
-      HTTPS_PROXY: https://poc-proxy:$CONTAINER_PROXY_PORT
-      # NODE_EXTRA_CA_CERTS: /tmp/mitmproxy-ca-cert.pem
+      HTTPS_PROXY: http://poc-proxy:$CONTAINER_PROXY_PORT
+      NODE_EXTRA_CA_CERTS: /tmp/proxy-cert.crt
       # If value equals '0', certificate validation is disabled for TLS
       # connections. This makes TLS, and HTTPS by extension, insecure. The use
       # of this environment variable is strongly discouraged.
@@ -42,8 +42,8 @@ services:
       - "8002:8002"
     volumes:
       # Map local directory to Container for easy access of settings
-      - ./.anyproxy:/anyproxy
-      
+      - ./.anyproxy:/root/.anyproxy
+    
 networks:
   poc-net:
     driver: bridge

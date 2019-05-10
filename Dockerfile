@@ -13,7 +13,7 @@ COPY --chown=node:node ./package*.json ./
 RUN npm i --only=production --quiet
 # Copy Host code to the Container
 COPY --chown=node:node ./server ./server
-COPY --chown=node:node ./.mitmproxy/mitmproxy-ca-cert.pem /tmp/
+COPY --chown=node:node ./.anyproxy/certificates/rootCA.crt /tmp/proxy-cert.crt
 # List off contents of final image
 RUN ls -la ${CONTAINER_APP_DIR}
 # Expose the default port from the server, on the container
