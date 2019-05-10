@@ -10,7 +10,7 @@ WORKDIR ${CONTAINER_APP_DIR}
 # Copy over package related files to install production modules
 COPY --chown=node:node ./package*.json ./
 # Install production dependencies
-RUN npm i --only=production --quiet
+RUN npm i --only=prod --quiet
 # Copy Host code to the Container
 COPY --chown=node:node ./server ./server
 COPY --chown=node:node ./.anyproxy/certificates/rootCA.crt /tmp/proxy-cert.crt
