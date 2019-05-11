@@ -4,7 +4,6 @@ const color = require('cli-color');
 const http = require('http');
 const { networkInterfaces } = require('os');
 const request = require('request');
-const jsonResp = require('./jsonResp');
 const requestHandler = require('./requestHandler');
 
 const PORT = process.env.SERVER_PORT || 3000;
@@ -39,9 +38,7 @@ const rootHandler = ({ res }) => {
   delete require.cache[require.resolve('./template.js')];
   const template = require('./template');
   
-  request({
-    url: 'https://rickandmortyapi.com/api/character/2',
-  }, (err, body, data) => {
+  request('https://rickandmortyapi.com/api/character/2', (err, body, data) => {
     if(err) {
       res.statusCode = 500;
       res.end(`${err.code} | ${err.stack}`);
@@ -61,16 +58,12 @@ const errorHandler = ({ res }, code, msg) => {
 const apiHandler = ({ reqData, res }) => {
   const url = `${ reqData.protocol }://example.com`;
   
-  request({
-    // url: 'https://rickandmortyapi.com/api/character/2',
-    url,
-  }, (err, body, data) => {
+  request(url, (err, body, data) => {
     if(err) {
       res.statusCode = 500;
       res.end(`${err.code} | ${err.stack}`);
     }
     else {
-      // jsonResp(res, data);
       res.end(data);
     }
   });
@@ -84,11 +77,14 @@ http
   ]))
   .listen(PORT, (err) => {
     if(err) throw err;
+    
+    const EXTERNAL_IP = getExternalIP();
+    
     setTimeout(() => {
       let msg =
         'Server running at:'
         + `\n  Internal: ${ color.cyan(`http://localhost:${ PORT }/`) }`
-        + `\n  External: ${ color.cyan(`http://${ getExternalIP() }:${ PORT }/`) }`;
+        + `\n  External: ${ color.cyan(`http://${ EXTERNAL_IP }:${ PORT }/`) }`;
       
       console.log(msg);
       
@@ -102,6 +98,12 @@ http
           http.get(proxy, (res) => {
             console.log( color.green('Ping for Proxy successful') );
             clearInterval(ping);
+            
+            msg =
+              'Proxy Web GUI running at:'
+              + `\n  Internal: ${ color.cyan(`http://localhost:${ process.env.HOST_PROXY_WEB_PORT }/`) }`
+              + `\n  External: ${ color.cyan(`http://${ EXTERNAL_IP }:${ process.env.HOST_PROXY_WEB_PORT }/`) }`;
+            console.log(msg);
           })
           .on('error', (err) => 
             console.warn( color.yellow(`Ping for ${ color.cyan(proxy) } failed`) )

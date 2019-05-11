@@ -7,10 +7,11 @@ services:
         # NOTE - Check `.env` for variable values
         CONTAINER_APP_PARENT_DIR: $CONTAINER_APP_PARENT_DIR
         CONTAINER_APP_DIR: $CONTAINER_APP_DIR
+        HOST_PROXY_WEB_PORT: $HOST_PROXY_WEB_PORT
         NODE_ENV: production
         SERVER_PORT: $CONTAINER_SERVER_PORT
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: ./app/Dockerfile
     container_name: poc-app
     environment:
       # NOTE - Using the name of the container `poc-proxy` for the domain
@@ -26,11 +27,11 @@ services:
       - "$HOST_SERVER_PORT:$CONTAINER_SERVER_PORT"
     volumes:
       # Map local files to Container for real-time changes
-      - ./server:$CONTAINER_APP_DIR/server
+      - ./app/src:$CONTAINER_APP_DIR/src
   proxy:
     build:
-      context: ./
-      dockerfile: Dockerfile.proxy
+      context: ./proxy
+      dockerfile: Dockerfile
     container_name: poc-proxy
     image: poc-proxy
     networks: 
@@ -41,7 +42,7 @@ services:
       - "$HOST_PROXY_WEB_PORT:$CONTAINER_PROXY_WEB_PORT"
     volumes:
       # Map local directory to Container for easy access of settings
-      - ./.anyproxy:/root/.anyproxy
+      - ./proxy/src:/root/.anyproxy
     
 networks:
   poc-net:
