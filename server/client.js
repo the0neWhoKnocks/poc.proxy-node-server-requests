@@ -34,4 +34,8 @@ function handleBtnClick(ev) {
 window.addEventListener('DOMContentLoaded', () => {
   document.body.addEventListener('click', handleBtnClick);
   els.resp = document.querySelector('#resp');
+  
+  if(window.appData){
+    writeResp( JSON.stringify(window.appData, null, 2) );
+  }
 });

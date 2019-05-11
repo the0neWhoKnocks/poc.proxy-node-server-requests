@@ -1,7 +1,7 @@
 const { readFileSync } = require('fs');
 const { resolve } = require('path');
 
-module.exports = () => `
+module.exports = ({ data }) => `
   <html>
   <head>
     <title></title>
@@ -21,6 +21,9 @@ module.exports = () => `
       }
     </style>
   </head>
+  <script>
+    window.appData = ${ data };
+  </script>
   <script>${ readFileSync(resolve(__dirname, './client.js')) }</script>
   <body>
     <button name="sReq" data-protocol="https">(Server) HTTPS Request</button>
