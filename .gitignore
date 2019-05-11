@@ -1,11 +1,11 @@
 # directories
-.anyproxy/cache
+anyproxy/cache
 node_modules
 tests/puppeteer-chrome-profile
 
 # files
 *.log
 .DS_Store
-.anyproxy/certificates/*
-!.anyproxy/certificates/rootCA.crt
-!.anyproxy/certificates/rootCA.key
+anyproxy/src/certificates/*
+!anyproxy/src/certificates/rootCA.crt
+!anyproxy/src/certificates/rootCA.key
