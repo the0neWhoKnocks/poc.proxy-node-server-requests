@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "docker-compose up",
     "test": "bin/test-runner.sh"
   },
   "repository": {
@@ -12,10 +12,7 @@
     "url": "git+https://github.com/the0neWhoKnocks/poc.proxy-node-server-requests"
   },
   "author": "",
-  "dependencies": {
-    "cli-color": "^1.4.0",
-    "request": "^2.88.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "dotenv": "^8.0.0",
     "puppeteer": "^1.15.0"
