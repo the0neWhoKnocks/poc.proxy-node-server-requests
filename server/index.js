@@ -39,8 +39,18 @@ const rootHandler = ({ res }) => {
   delete require.cache[require.resolve('./template.js')];
   const template = require('./template');
   
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.end(template());
+  request({
+    url: 'https://rickandmortyapi.com/api/character/2',
+  }, (err, body, data) => {
+    if(err) {
+      res.statusCode = 500;
+      res.end(`${err.code} | ${err.stack}`);
+    }
+    else {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.end(template({ data }));
+    }
+  });
 };
 
 const errorHandler = ({ res }, code, msg) => {
@@ -89,16 +99,18 @@ http
         if(pingCount < maxPing){
           pingCount += 1;
           
-          console.log(`Pinging ${ proxy }`);
-          
           http.get(proxy, (res) => {
-            console.log('success');
+            console.log( color.green('Ping for Proxy successful') );
             clearInterval(ping);
           })
-          .on('error', (err) => console.log('fail'));
+          .on('error', (err) => 
+            console.warn( color.yellow(`Ping for ${ color.cyan(proxy) } failed`) )
+          );
         }
         else {
           clearInterval(ping);
+          console.error( color.red('Ping limit reached, Proxy unreachable') );
+          process.exit(0);
         }
       }, 1000);
       
