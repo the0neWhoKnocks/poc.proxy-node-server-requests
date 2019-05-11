@@ -1,5 +1,16 @@
 # POC to Proxy Node App Requests
 
+What I'm trying to accomplish:
+- Allow an application to run as it normally would on the Client & Server with
+  no requirement to add extra code to proxy requests.
+- Proxy all Client & Server calls through a middleman to allow for capturing
+  responses for future playback for consistent Integration testing.
+  - If external requests from the Server can be recorded and played back, it
+    would give us a more accurate representation of the App's functionality
+    since we'd still be flowing through the actual Server request stream to get
+    data, but just the data would be mocked out, not the call/response to the
+    Server.
+
 ---
 
 ## Install
@@ -95,3 +106,32 @@ args: [
 ],
 ```
 to get around [sandbox issues](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#setting-up-chrome-linux-sandbox).
+
+---
+
+## What I Tried
+
+### Proxying
+
+#### MitmProxy
+
+Pros:
+- Nice CLI and Web interface, like a sparse (free) Charles Proxy.
+- Can pause requests and manipulate responses within the Web GUI.
+
+Cons:
+- Addons are written in Python
+
+### Recording/Playback Tools
+
+#### Bokor
+
+Pros:
+- Simple setup
+- Good for API testing
+
+Cons:
+- Requires all calls to go directly into the Bokor Server. So it can only target
+  calls targeting the Bokor Server's domain, meaning that Client or Server
+  calls to external API's would have to be manipulated in some way to record
+  data.
