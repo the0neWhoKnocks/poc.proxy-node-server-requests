@@ -11,4 +11,4 @@ RUN echo "#!/bin/sh" > /usr/bin/open \
 
 RUN mkdir /anyproxy
 
-CMD ["anyproxy", "--intercept"]
+CMD ["sh", "-c", "rm -rf /root/.anyproxy/cache && anyproxy --intercept"]
