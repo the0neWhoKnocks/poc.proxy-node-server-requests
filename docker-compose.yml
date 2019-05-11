@@ -30,6 +30,9 @@ services:
       - ./app/src:$CONTAINER_APP_DIR/src
   proxy:
     build:
+      args:
+        # NOTE - Check `.env` for variable values
+        CONTAINER_PROXY_PARENT_DIR: $CONTAINER_PROXY_PARENT_DIR
       context: ./proxy
       dockerfile: Dockerfile
     container_name: poc-proxy
@@ -43,6 +46,9 @@ services:
     volumes:
       # Map local directory to Container for easy access of settings
       - ./proxy/src:/root/.anyproxy
+      # Map integration rules to Container rules
+      - ./tests/rules.js:$CONTAINER_PROXY_PARENT_DIR/rules.js
+      - ./tests/recordings:$CONTAINER_PROXY_PARENT_DIR/recordings
     
 networks:
   poc-net:

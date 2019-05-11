@@ -1,14 +1,17 @@
+# Setup the environment
 FROM node:10-alpine
-ARG ANYPROXY_VERSION=4.0.5
-
+ARG CONTAINER_PROXY_PARENT_DIR
+ENV CONTAINER_PROXY_PARENT_DIR=${CONTAINER_PROXY_PARENT_DIR}
+ENV RECORDINGS_DIR=${CONTAINER_PROXY_PARENT_DIR}/recordings
+RUN mkdir -p ${CONTAINER_PROXY_PARENT_DIR}/node_modules \
+  && chown -R node:node ${CONTAINER_PROXY_PARENT_DIR}/*
+WORKDIR ${CONTAINER_PROXY_PARENT_DIR}
+# Copy over package related files to install production modules
+COPY --chown=node:node ./package*.json ./
+# Install production dependencies
+RUN npm i --only=prod --quiet
+# Expose the default Server's port and Web GUI port
 EXPOSE 8001
 EXPOSE 8002
-
-RUN echo "#!/bin/sh" > /usr/bin/open \
-  && echo "exit 0" >> /usr/bin/open \
-  && chmod +x /usr/bin/open \
-  && npm i -g anyproxy@$ANYPROXY_VERSION
-
-RUN mkdir /anyproxy
-
-CMD ["sh", "-c", "rm -rf /root/.anyproxy/cache && anyproxy --intercept"]
+# Cleans cache and starts the proxy
+CMD ["sh", "-c", "rm -rf /root/.anyproxy/cache && npx anyproxy --intercept --rule $CONTAINER_PROXY_PARENT_DIR/rules.js"]

@@ -1,0 +1,12 @@
+{
+  "name": "proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {},
+  "author": "",
+  "dependencies": {
+    "anyproxy": "^4.0.5"
+  }
+}
