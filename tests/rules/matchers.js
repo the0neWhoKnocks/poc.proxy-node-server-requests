@@ -1,21 +1,9 @@
 const requireCurrent = require('./requireCurrent');
 
-const ramHandler = (resp) => {
-  const response = resp.response;
-  
-  if(response.header['Content-Type'].includes('application/json')){
-    response.body = JSON.parse(response.body.toString('utf8'));
-  }
-  
-  return response;
-};
-
-const ramMatcher = ({ url }) => {
-  return ( url.startsWith('https://rickandmortyapi.com') )
-    ? ramHandler
-    : false;
-};
+const ramMatcher = ({ url }) => url.startsWith('https://rickandmortyapi.com');
+const exampleMatcher = ({ url }) => /example\.com\/$/.test(url);
 
 module.exports = [
   ramMatcher,
+  exampleMatcher,
 ];

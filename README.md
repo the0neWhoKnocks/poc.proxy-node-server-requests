@@ -87,6 +87,13 @@ nr test
 
 ## Troubleshooting
 
+### Tests aren't loading or taking a looooong time to load
+
+In `proxy/Dockerfile` remove the `--silent` flag, the Proxy may be logging an
+error.
+
+### Simple CURL validation
+
 ```sh
 http_proxy=http://localhost:8001/ curl http://example.com/
 https_proxy=http://localhost:8001/ curl -k https://example.com/
