@@ -47,7 +47,7 @@ services:
       # Map local directory to Container for easy access of settings
       - ./proxy/src:/root/.anyproxy
       # Map integration rules to Container rules
-      - ./tests/rules.js:$CONTAINER_PROXY_PARENT_DIR/rules.js
+      - ./tests/rules:$CONTAINER_PROXY_PARENT_DIR/rules
       - ./tests/recordings:$CONTAINER_PROXY_PARENT_DIR/recordings
     
 networks:

@@ -14,4 +14,4 @@ RUN npm i --only=prod --quiet
 EXPOSE 8001
 EXPOSE 8002
 # Cleans cache and starts the proxy
-CMD ["sh", "-c", "rm -rf /root/.anyproxy/cache && npx anyproxy --intercept --rule $CONTAINER_PROXY_PARENT_DIR/rules.js"]
+CMD ["sh", "-c", "rm -rf /root/.anyproxy/cache && npx anyproxy --intercept --silent --rule $CONTAINER_PROXY_PARENT_DIR/rules"]
