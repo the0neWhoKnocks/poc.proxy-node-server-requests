@@ -9,65 +9,85 @@ const requireCurrent = require('./requireCurrent');
 
 const logPrefix = color.green.inverse(' PROXY ');
 
-const play = ({ matchers, req, resolve }) => {
-  const url = req.url;
+const getReqData = ({ matchers, req }) => {
   const method = req.requestOptions.method;
-  let match;
+  let match, postData;
   
   for(let i=0; i<matchers.length; i++){
     match = matchers[i](req);
-    if( match ) break;
+    
+    if( match ) {
+      if(method === 'POST'){
+        postData = req.requestData.toString('utf8');
+      }
+      break;
+    }
   }
   
-  const { fileName, filePath } = requireCurrent('./getFileName')({
-    id: match,
-    method,
-    url,
-  });
+  return { match, method, postData };
+};
+
+const play = ({ matchers, req, resolve }) => {
+  const url = req.url;
+  const { match, method, postData } = getReqData({ matchers, req });
   
-  try {
-    const file = readFileSync(filePath);
-    const { response } = JSON.parse(file);
-  
-    if(response.header['Content-Type'].includes('application/json')){
-      response.body = Buffer.from( JSON.stringify(response.body) );
+  // Only try to look up the cache if something has matched
+  if(match){
+    const { fileName, filePath } = requireCurrent('./getFileName')({
+      id: match,
+      method,
+      postData,
+      url,
+    });
+    
+    try {
+      const file = readFileSync(filePath);
+      const { response } = JSON.parse(file);
+    
+      if(
+        response.header['Content-Type'] // OPTIONS calls won't have this
+        && response.header['Content-Type'].includes('application/json')
+      ){
+        response.body = Buffer.from( JSON.stringify(response.body) );
+      }
+    
+      console.log(`${logPrefix} Play back ${ color.magenta(fileName) } for ${ color.cyan(url) }`);
+      resolve({ response });
     }
-  
-    console.log(`${logPrefix} Play back ${ color.magenta(fileName) } for ${ color.cyan(url) }`);
-    resolve({ response });
+    catch(err) {
+      if(err.code !== 'ENOENT') console.log(err);
+    
+      // only log if a user has specified a matcher rule
+      if( !!match ) {
+        console.log(`${logPrefix} No Recording found for ${ color.cyan(url) }`);
+      }
+    
+      resolve(null);
+    }
   }
-  catch(err) {
-    if(err.code !== 'ENOENT') console.log(err);
-  
-    // only log if a user has specified a matcher rule
-    if( !!match ) {
-      console.log(`${logPrefix} No Recording found for ${ color.cyan(url) }`);
-    }
-  
+  else {
     resolve(null);
   }
 };
 
 const record = ({ matchers, req, resp, resolve }) => {
   const url = req.url;
-  const method = req.requestOptions.method;
-  let match;
-  
-  for(let i=0; i<matchers.length; i++){
-    match = matchers[i](req);
-    if( match ) break;
-  }
+  const { match, method, postData } = getReqData({ matchers, req });
   
   if(match) {
     const { fileName, filePath } = requireCurrent('./getFileName')({
       id: match,
       method,
+      postData,
       url,
     });
     const response = resp.response;
     let body = response.body.toString('utf8');
     
-    if(response.header['Content-Type'].includes('application/json')){
+    if(
+      response.header['Content-Type'] // OPTIONS calls won't have this
+      && response.header['Content-Type'].includes('application/json')
+    ){
       body = JSON.parse(body);
     }
     

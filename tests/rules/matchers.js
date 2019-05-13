@@ -17,7 +17,10 @@ const ramMatcher = ({ url }) => {
 
 const exampleMatcher = ({ url }) => /example\.com\/$/.test(url);
 
+const typicodeMatcher = ({ url }) => url.startsWith('https://jsonplaceholder.typicode.com');
+
 module.exports = [
   ramMatcher,
   exampleMatcher,
+  typicodeMatcher,
 ];
