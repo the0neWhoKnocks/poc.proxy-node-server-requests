@@ -28,7 +28,8 @@ module.exports = ({ data }) => `
   <body>
     <button name="sReq" data-protocol="https">(Server) HTTPS Request</button>
     <button name="sReq" data-protocol="http">(Server) HTTP Request</button>
-    <button name="cReq">Client Request</button>
+    <button name="cReq" data-method="get">Client (GET) Request</button>
+    <button name="cReq" data-method="post">Client (POST) Request</button>
     <pre
       id="resp"
       style="width:100%; height:600px; overflow:auto; background:#666; color:#eee; padding:1em;"

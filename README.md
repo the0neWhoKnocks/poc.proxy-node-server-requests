@@ -103,7 +103,16 @@ nr test
     In this use case, it's how we record and play back responses.
   - The `recordings` are used in conjunction with the `rules`. It's the folder
     where responses are recorded, and served via the Proxy.
-    
+
+---
+
+## Metrics
+
+- Depending on Network latency, non-cached tests could take 4-5 seconds to run.
+- Running tests with cached results halves the time.
+- If calls to `page.screenshot` were removed, running tests with cached results
+  took a 3rd of the time (at about 1s to run).
+  
 ---
 
 ## Troubleshooting
