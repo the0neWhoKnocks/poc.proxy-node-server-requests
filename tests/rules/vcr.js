@@ -1,9 +1,29 @@
-const { readFileSync, writeFileSync } = require('fs');
+const { 
+  existsSync, 
+  mkdirSync, 
+  readFileSync, 
+  writeFileSync,
+} = require('fs');
+const color = require('cli-color');
 const requireCurrent = require('./requireCurrent');
+
+const logPrefix = color.green.inverse(' PROXY ');
 
 const play = ({ matchers, req, resolve }) => {
   const url = req.url;
-  const { fileName, filePath } = requireCurrent('./getFileName')({ url });
+  const method = req.requestOptions.method;
+  let match;
+  
+  for(let i=0; i<matchers.length; i++){
+    match = matchers[i](req);
+    if( match ) break;
+  }
+  
+  const { fileName, filePath } = requireCurrent('./getFileName')({
+    id: match,
+    method,
+    url,
+  });
   
   try {
     const file = readFileSync(filePath);
@@ -13,18 +33,15 @@ const play = ({ matchers, req, resolve }) => {
       response.body = Buffer.from( JSON.stringify(response.body) );
     }
   
-    console.log(`[PROXY] Play back '${ fileName }' for '${ url }'`);
+    console.log(`${logPrefix} Play back ${ color.magenta(fileName) } for ${ color.cyan(url) }`);
     resolve({ response });
   }
   catch(err) {
     if(err.code !== 'ENOENT') console.log(err);
   
     // only log if a user has specified a matcher rule
-    for(let i=0; i<matchers.length; i++){
-      if( matchers[i](req) ) {
-        console.log(`[PROXY] No Recording found for '${ url }'`);
-        break;
-      }
+    if( !!match ) {
+      console.log(`${logPrefix} No Recording found for ${ color.cyan(url) }`);
     }
   
     resolve(null);
@@ -33,6 +50,7 @@ const play = ({ matchers, req, resolve }) => {
 
 const record = ({ matchers, req, resp, resolve }) => {
   const url = req.url;
+  const method = req.requestOptions.method;
   let match;
   
   for(let i=0; i<matchers.length; i++){
@@ -41,7 +59,11 @@ const record = ({ matchers, req, resp, resolve }) => {
   }
   
   if(match) {
-    const { fileName, filePath } = requireCurrent('./getFileName')({ url });
+    const { fileName, filePath } = requireCurrent('./getFileName')({
+      id: match,
+      method,
+      url,
+    });
     const response = resp.response;
     let body = response.body.toString('utf8');
     
@@ -65,8 +87,10 @@ const record = ({ matchers, req, resp, resolve }) => {
     
     try{
       // Record request/response
+      const dir = `${process.env.RECORDINGS_DIR}/${method}`;
+      if(!existsSync(dir)) mkdirSync(dir);
       writeFileSync(filePath, JSON.stringify(fileData, null, 2));
-      console.log(`[PROXY] Recorded '${ fileName }' for '${ url }'`);
+      console.log(`${logPrefix} Recorded ${ color.magenta(fileName) } for ${ color.cyan(url) }`);
     }
     catch(err){
       response.statusCode = 500;
@@ -76,7 +100,7 @@ const record = ({ matchers, req, resp, resolve }) => {
     resolve({ response });
   }
   else {
-    console.log(`[PROXY] Pass through response for '${ url }'`);
+    console.log(`${logPrefix} Pass through response for ${ color.cyan(url) }`);
     resolve();
   }
 };

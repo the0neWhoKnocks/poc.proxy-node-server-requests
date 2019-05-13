@@ -96,7 +96,7 @@ http
           pingCount += 1;
           
           http.get(proxy, (res) => {
-            console.log( color.green('Ping for Proxy successful') );
+            console.log( color.green('Proxy is running') );
             clearInterval(ping);
             
             msg =
