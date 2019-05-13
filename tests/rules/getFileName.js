@@ -1,10 +1,13 @@
-const getFileName = ({ name, url }) => {
+const getFileName = ({ id, method, url }) => {
   const hash = require('crypto').createHash('md5').update(url).digest('hex');
+  const domain = url.replace(/https?:\/\//, '').split('/')[0];
+  const name = (id && typeof id === 'string')
+    ? `${domain}_${id}`
+    : `${domain}_${hash}`;
   
-  // return `${ process.env.RECORDINGS_DIR }/${ name }-${hash}.json`;
   return {
-    fileName: hash,
-    filePath: `${ process.env.RECORDINGS_DIR }/${hash}.json`,
+    fileName: name,
+    filePath: `${ process.env.RECORDINGS_DIR }/${method}/${name}.json`,
   };
 };
 
