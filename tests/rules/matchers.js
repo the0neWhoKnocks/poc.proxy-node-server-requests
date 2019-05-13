@@ -3,7 +3,7 @@ const requireCurrent = require('./requireCurrent');
 const ramMatcher = ({ url }) => {
   if( url.startsWith('https://rickandmortyapi.com') ){
     if( url.includes('api/character/1') ){
-      return 'Rick';
+      return 'Rick Sanchez';
     }
     else if( url.includes('api/character/2') ){
       return 'Morty';
