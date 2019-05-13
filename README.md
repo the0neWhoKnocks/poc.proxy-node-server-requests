@@ -60,6 +60,10 @@ dc down
 
 If you need to rebuild one of the services.
 ```sh
+# build all
+dc build
+
+# build individually
 dc build app
 # or
 dc build proxy
