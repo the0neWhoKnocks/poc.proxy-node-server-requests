@@ -89,6 +89,23 @@ nr test
 
 ---
 
+## How Is This All Working?
+
+- The App and Proxy both run in Docker Containers.
+- When the App Container starts, it has it's `*_PROXY` environment variables
+  pointing to the Proxy Container (which handles any Server requests).
+- When we run the tests, it spins up an instance of Chrome that points
+  `--proxy-server` to the Proxy Container (which handles any Client requests).
+- When the Proxy Container is started up, some `volumes` are created that map:
+  - AnyProxy's config folder `/root/.anyproxy` to `./proxy/src` to allow us to
+    install and always use the same `rootCA.crt`.
+  - The `rules` are used to tell AnyProxy how to handle requests and responses.
+    In this use case, it's how we record and play back responses.
+  - The `recordings` are used in conjunction with the `rules`. It's the folder
+    where responses are recorded, and served via the Proxy.
+    
+---
+
 ## Troubleshooting
 
 ### Tests aren't loading or taking a looooong time to load
