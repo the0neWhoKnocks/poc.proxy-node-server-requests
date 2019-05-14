@@ -51,7 +51,7 @@ const play = ({ matchers, req, resolve }) => {
         response.body = Buffer.from( JSON.stringify(response.body) );
       }
     
-      console.log(`${logPrefix} Play back ${ color.magenta(fileName) } for ${ color.cyan(url) }`);
+      console.log(`${logPrefix} Play back ${ color.magenta(fileName) } for (${method}) ${ color.cyan(url) }`);
       resolve({ response });
     }
     catch(err) {

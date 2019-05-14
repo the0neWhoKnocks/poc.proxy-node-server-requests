@@ -9,3 +9,4 @@ tests/puppeteer-chrome-profile
 proxy/src/certificates/*
 !proxy/src/certificates/rootCA.crt
 !proxy/src/certificates/rootCA.key
+tests/rules/testData.json

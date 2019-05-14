@@ -17,7 +17,17 @@ const ramMatcher = ({ url }) => {
 
 const exampleMatcher = ({ url }) => /example\.com\/$/.test(url);
 
-const typicodeMatcher = ({ url }) => url.startsWith('https://jsonplaceholder.typicode.com');
+const typicodeMatcher = ({ requestOptions, url }) => {
+  if( url.startsWith('https://jsonplaceholder.typicode.com') ){
+    const data = requireCurrent('./testData.json');
+    
+    if(data.typicodeCallCount === 2) return '2nd call';
+    if(data.typicodeCallCount === 3) return '3rd call';
+    
+    return true;
+  }
+  else return false;
+};
 
 module.exports = [
   ramMatcher,
