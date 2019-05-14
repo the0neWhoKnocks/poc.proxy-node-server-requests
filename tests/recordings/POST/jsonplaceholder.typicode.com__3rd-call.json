@@ -1,0 +1,29 @@
+{
+  "response": {
+    "body": "Service Failure",
+    "header": {
+      "Date": "Mon, 13 May 2019 20:21:25 GMT",
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Length": "64",
+      "Connection": "keep-alive",
+      "Set-Cookie": "__cfduid=d96451d0d6bed50a3e725adb6d1c925e61557778884; expires=Tue, 12-May-20 20:21:24 GMT; path=/; domain=.typicode.com; HttpOnly",
+      "X-Powered-By": "Express",
+      "Access-Control-Allow-Origin": "http://localhost:3000",
+      "Vary": "Origin, X-HTTP-Method-Override, Accept-Encoding",
+      "Access-Control-Allow-Credentials": "true",
+      "Cache-Control": "no-cache",
+      "Pragma": "no-cache",
+      "Expires": "-1",
+      "Access-Control-Expose-Headers": "Location",
+      "Location": "http://jsonplaceholder.typicode.com/posts/101",
+      "X-Content-Type-Options": "nosniff",
+      "Etag": "W/\"40-HRHvs1OCg+giXSDmdCE4QW/raZ8\"",
+      "Via": "1.1 vegur",
+      "Expect-CT": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+      "Server": "cloudflare",
+      "CF-RAY": "4d6756adda66c97d-SEA",
+      "x-anyproxy-origin-content-length": 64
+    },
+    "statusCode": 500
+  }
+}
