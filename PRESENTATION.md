@@ -59,6 +59,6 @@ In the end, the solution was to use a combination of Docker and Node tools.
 <img width="100%" src="https://user-images.githubusercontent.com/344140/57778680-6c643c80-76d9-11e9-8613-04e6cb652262.gif" alt="let-us-eat-cake">
 <div style="font-size:0">
   <img width="33%" src="https://user-images.githubusercontent.com/344140/57778677-6c643c80-76d9-11e9-859b-d418f669a3d0.gif" alt="fey-cake">
-  <img width="33%" src="https://user-images.githubusercontent.com/344140/57778679-6c643c80-76d9-11e9-8950-2b8d6c58fdc5.gif" alt="gerbal-cake">
+  <img width="32%" src="https://user-images.githubusercontent.com/344140/57778679-6c643c80-76d9-11e9-8950-2b8d6c58fdc5.gif" alt="gerbal-cake">
   <img width="33%" src="https://user-images.githubusercontent.com/344140/57778681-6cfcd300-76d9-11e9-90a4-7b490adde5e8.gif" alt="murray-cake">
 </div>
