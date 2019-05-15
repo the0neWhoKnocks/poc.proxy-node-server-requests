@@ -24,7 +24,7 @@ services (without the overhead of manually scraping response data).
 ## The Idea
 
 The idea was to start up the App normally, then start up a Proxy to act as a
-Man-In-The-Middle to intercept requests to and from the App and determine
+Man-In-The-Middle to intercept requests to-and-from the App and determine
 whether or not to record, play-back, or pass-through responses. Then we just
 run our Integration tests against the App just as a Client would navigate the
 App via a Browser.
