@@ -34,9 +34,9 @@ App via a Browser.
           ⇅
         Browser  # Browser opens and requests App
           ⇅
-    ┌──→ App ←──┐    # App splits off into a Client or Server flow and
-    │     │     │    # requests data from external APIs.
-  Client ↲ ↳ Server
+         App      # App splits off into a Client or Server flow and
+       ⤢    ⤡    # requests data from external APIs.
+  Client     Server
     ⇅           ⇅
   Proxy       Proxy  # Proxy records, plays-back, or passes-through responses
     ⇅           ⇅
