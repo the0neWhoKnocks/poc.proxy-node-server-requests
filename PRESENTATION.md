@@ -14,7 +14,7 @@ prefix them with the Basic-Auth credentials - in the long run, this did not play
 well with the `history` API.
 
 Ideally, we want to have our cake and eat it too. What that means in our case
-is that we want to be able to run Integration tests against an untouched
+is that we want to be able to run Integration tests against an unaltered
 Production version of our App, yet still have the flexibility and performance
 of transparently serving mocked request data that matches the payloads of actual
 services (without the overhead of manually scraping response data).
