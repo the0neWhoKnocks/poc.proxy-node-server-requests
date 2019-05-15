@@ -37,10 +37,10 @@ App via a Browser.
     ┌──→ App ←──┐    # App splits off into a Client or Server flow and
     │     │     │    # requests data from external APIs.
   Client ↲ ↳ Server
-    ⇅            ⇅
-  Proxy        Proxy  # Proxy records, plays-back, or passes-through responses
-    ⇅            ⇅
-   APIs         APIs
+    ⇅           ⇅
+  Proxy       Proxy  # Proxy records, plays-back, or passes-through responses
+    ⇅           ⇅
+   APIs        APIs
 ```
 
 ---
