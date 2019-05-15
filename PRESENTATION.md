@@ -56,6 +56,9 @@ In the end, the solution was to use a combination of Docker and Node tools.
 - [Puppeteer](https://github.com/GoogleChrome/puppeteer) is used for the Integration tests
 
 
+<br><br><br><br><br><br><br><br>
+
+
 <img width="100%" src="https://user-images.githubusercontent.com/344140/57778680-6c643c80-76d9-11e9-8613-04e6cb652262.gif" alt="let-us-eat-cake">
 <div style="font-size:0">
   <img width="33%" src="https://user-images.githubusercontent.com/344140/57778677-6c643c80-76d9-11e9-859b-d418f669a3d0.gif" alt="fey-cake">
