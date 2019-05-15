@@ -1,4 +1,5 @@
 # directories
+bin/chrome-win
 node_modules
 proxy/src/cache
 tests/puppeteer-chrome-profile
