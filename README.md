@@ -30,6 +30,14 @@
     - Close the new window, and you'll be prompted to Update cert settings,
       and most likely enter your password.
 
+If you're using WSL, you'll need to download the version of Chrome that
+Puppeteer ships with. At the time of writing that's
+https://storage.googleapis.com/chromium-browser-snapshots/Win/656675/chrome-win.zip
+or
+https://storage.googleapis.com/chromium-browser-snapshots/Win_x64/656675/chrome-win.zip.
+Just download the version specific to your architecture and extract the
+`chrome-win` folder in the zip to the `bin` directory.
+
 ---
 
 ## Run - App & Proxy

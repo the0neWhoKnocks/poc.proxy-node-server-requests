@@ -59,7 +59,7 @@ const play = ({ matchers, req, resolve }) => {
     
       // only log if a user has specified a matcher rule
       if( !!match ) {
-        console.log(`${logPrefix} No Recording found for ${ color.cyan(url) }`);
+        console.log(`${logPrefix} No Recording found for (${method}) ${ color.cyan(url) }`);
       }
     
       resolve(null);
