@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=10.14.1"
+  },
   "scripts": {
     "start": "docker-compose up",
     "test": "bin/test-runner.sh"
