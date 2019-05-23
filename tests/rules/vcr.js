@@ -105,16 +105,18 @@ const record = ({ matchers, req, resp, resolve }) => {
       },
     };
     
-    try{
-      // Record request/response
-      const dir = `${process.env.RECORDINGS_DIR}/${method}`;
-      if(!existsSync(dir)) mkdirSync(dir);
-      writeFileSync(filePath, JSON.stringify(fileData, null, 2));
-      console.log(`${logPrefix} Recorded ${ color.magenta(fileName) } for ${ color.cyan(url) }`);
-    }
-    catch(err){
-      response.statusCode = 500;
-      response.body = `${err.code} | ${err.stack}`;
+    if (!existsSync(filePath)) {
+      try{
+        // Record request/response
+        const dir = `${process.env.RECORDINGS_DIR}/${method}`;
+        if(!existsSync(dir)) mkdirSync(dir);
+        writeFileSync(filePath, JSON.stringify(fileData, null, 2));
+        console.log(`${logPrefix} Recorded ${ color.magenta(fileName) } for (${method}) ${ color.cyan(url) }`);
+      }
+      catch(err){
+        response.statusCode = 500;
+        response.body = `${err.code} | ${err.stack}`;
+      }
     }
     
     resolve({ response });
